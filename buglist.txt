@@ -1,0 +1,207 @@
+
+
+ 
+ 
+  问题记录
+ 
+ 
+  64位浏览器无法录制
+ 
+ 
+  录制的aw在webtest工具打开无法编辑parameter
+ 
+ 
+  录制的map在webtst工具上无法生成beans文件
+ 
+ 
+  录制点击类元素的时候没有标注清晰是哪个元素的点击（查看不方便，最好是设置name为必填项）
+ 
+ 
+  点击暂停按钮时，图标的状态不变（用户无法确定状态是暂停还是录制）
+ 
+ 
+  元素录制后，在页面没有出现步骤标记
+ 
+ 
+  自定义的aw的name为空也可保存
+ 
+ 
+  自定义的aw不同元素可重名和map不同元素的name可重名
+ 
+ 
+  当登录超时或注销账户后再登录进页面，map存在重名且不会读取以前存在的map内容
+ 
+ 
+  
+  
+   
+    无法录制页面的滚动条（IE）
+   
+  
+  
+ 
+ 
+  aw元素命名没做限制（工具的aw元素的命名规则为只允许字母、数字、下划线且首位不能是数字）
+ 
+ 
+  用户使用插件需要手工4步操作，需简化，最好支持一键式
+ 
+ 
+  
+  
+   
+    当前aw和map生成在一个目录，这样上传时用户操作繁琐。需按照用例工程中的存放方式保存。如：aw/ui/*.aw；map/*.map
+    同时也支持用户在aw和map下自定义子目录
+   
+  
+  
+ 
+ 
+  map文件的命名规则：
+   
+  默认规则是：不在iframe里的，Map文件名字是地址栏的全名去除ip:port(或域名)和ip之前的,去除？后面的,并把uri中的/替换成_
+   
+  如：https://login.huawei.com/login/?redirect=http%3A%2F%2Fw3.huawei.com%2Fnext%2Findexa.html
+  生成的map名字是login.map
+    2.在iframe里的，优先使用src，没有src的使用id，一样的去除规则。
+    如：
+    <iframe class="css6" id="mainFrame"
+  width="100%" frameborder="0" height="410px"
+  src="https://10.179.107.28:9502/bme/business.action?BMEBusiness=homePage!AND!BMEWebToken=5fc93282-99d0-4394-8048-8482d1872304">
+  
+      </iframe>
+    生成的map名字是bme_business_action_mainFrame.map
+    
+    要求：优先使用默认规则，并支持用户设置自定义规则。
+    自定义规则指截取规则。比如：使用?或者#等某个标志字符后面的几个/内容作为map名字
+    如：http://10.74.190.77:8080/front/#/apiIntDesign/5fc93282-99d0-4394-8048-8482d1872304
+    设置标识符：# 标识符后截取层数 1
+    预期的map名字是front_apiIntDesign.map
+    
+ 
+ 
+  
+  
+   
+    
+    
+    
+    
+   
+   
+    
+    
+   
+   
+    
+   
+   
+    
+    
+    
+   
+  
+  
+  
+   
+    1） AW中的action的value应该是全大写
+        2） name应该是aw文件名
+        3） 不要出现null，用空串
+        4）w3登录的Password应该是input，而不是click
+        
+        
+        5）map名字以.map结尾
+        
+        
+        
+        
+        
+   
+  
+  
+ 
+ 
+  
+  
+   
+    1） w3的Submit的元素名没有直接录制出来
+        2） submit使用的是xpath方式，但是没有录制出来
+        
+        
+        
+        
+        
+        
+        
+        
+   
+  
+  
+ 
+ 
+  map内容中的map Name改为map name（为了和之前IDE版本保持一致）
+ 
+ 
+  不支持firefox、chrome录制
+ 
+ 
+  aw删除选中的元素后，如果需要删除其他元素还得手动去选（建议在删除当前元素后自动选中其前或后的元素）
+ 
+ 
+  录制生成的aw格式不对，在工具上打开报错：An error has occurred. See error log for
+  more details.
+    null argument:
+ 
+ 
+  aw保存的命名规则为大小写字母和下划线
+ 
+ 
+  录制了几个元素，此时点击新建，原来录制的内容已经消失，此时再次录制，元素能录制下来，但只有系列号且元素的ID和name都没有录制到
+ 
+ 
+  生成的map格式较乱，不利于用户去审核元素
+ 
+ 
+  以前提到重复元素问题还存在
+ 
+ 
+  没有暂停功能，操作起来不方便
+ 
+ 
+  跨页面录制的时候多个页面的元素只保存在同一个aw，使用起来不方便
+ 
+ 
+  不支持一键式安装使用（从未使用HP插件的电脑上使用）
+ 
+ 
+  3个iframe页面的元素只录制在一个iframe的map里
+ 
+ 
+  自定义的aw元素名称重复录制不会读取已经命名的aw元素
+ 
+ 
+  前录制插件存在w3页面的map切换其他页面录制后再切换回w3页面录制会报错（页面录制的aw数量过多，40个以上）：index
+  was out of range.must be non-negative and less than the size of the
+  collection.
+               parameter name :  index（偶现）
+    
+ 
+ 
+  重复切换2个页面录制的map元素可重复
+ 
+ 
+  W3页面未登录和登录注销后录制的页面生成的map名称有差异（导致同一页面的map无法再加载）
+ 
+ 
+  自定义aw元素命名后再次录制在aw列表无法显示名称且继续录制其它元素会提示name为空
+ 
+ 
+  录制插件生成的自定义命名name的aw元素在工具上执行用例时无法使用（可视化界面编辑可生成脚本）
+ 
+ 
+  录制插件生成的aw在工具上需要双击打开aw编辑页面并点击OK方可拖拽到可视化界面
+ 
+ 
+  含有如图元素在工具上可视化界面生成脚本会报错
+ 
+
