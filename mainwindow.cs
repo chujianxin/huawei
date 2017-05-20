@@ -26,26 +26,26 @@ namespace AWClient
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    [TemplatePart(Name = "PART_scrollIndex", Type = typeof(ScrollViewer))]  
+    [TemplatePart(Name = "PART_scrollIndex", Type = typeof(ScrollViewer))]
     public partial class MainWindow : Window
     {
-        
+
         public StringBuilder buf0 = new StringBuilder("");
         public StringBuilder buf1 = new StringBuilder("");
         public string json = "";
         public static int index = 1;
         TextBox txtNode = new TextBox();
         ListBoxItem selectNode = null;
-        public static ListBox lIndex =null;
+        public static ListBox lIndex = null;
         public static ListBox lbox = null;
         public static ListBox lboxmap = null;
-        string olddata="";
+        string olddata = "";
         string oldName = "";
         public static Button a = null;
         public static bool isPause = false;
         delegate void DbackgroundWorker_DoWork(object sender, DoWorkEventArgs e);
         Thread t;
-       
+
         public MainWindow()
         {
             InitializeComponent();
@@ -107,7 +107,7 @@ namespace AWClient
             try
             {
                 proc = new Process();
-                proc.StartInfo.FileName = System.IO.Directory.GetCurrentDirectory()+"//reg.bat";
+                proc.StartInfo.FileName = System.IO.Directory.GetCurrentDirectory() + "//reg.bat";
                 proc.StartInfo.Arguments = string.Format("10");//this is argument
                 proc.StartInfo.CreateNoWindow = false;
                 proc.Start();
@@ -145,23 +145,23 @@ namespace AWClient
                         {
                             if (listBox.Items.Count >= 1)
                             {
-                                ListBoxItem last= (ListBoxItem)listBox.Items[listBox.Items.Count - 1];
-                                if (last.Content==null)
+                                ListBoxItem last = (ListBoxItem)listBox.Items[listBox.Items.Count - 1];
+                                if (last.Content == null)
                                 {
                                     cmdEdit.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, cmdEdit));
                                     listBox.SelectedItem = last;
-                                    MessageBox.Show("当前元素Name为空，无法录制下一元素！","提示",MessageBoxButton.OK,MessageBoxImage.Information,MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                                    MessageBox.Show("当前元素Name为空，无法录制下一元素！", "提示", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
                                     return;
                                 }
 
-								if (!utils.isRightName(last.Content.ToString()))
-								{
-									cmdEdit.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, cmdEdit));
-									listBox.SelectedItem = last;
-									MessageBox.Show("Element Name中仅可包含大小写和下划线且不能以数字开头！", "提示", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
-									return;
-								}
-							}
+                                if (!utils.isRightName(last.Content.ToString()))
+                                {
+                                    cmdEdit.RaiseEvent(new RoutedEventArgs(Button.ClickEvent, cmdEdit));
+                                    listBox.SelectedItem = last;
+                                    MessageBox.Show("Element Name中仅可包含大小写和下划线且不能以数字开头！", "提示", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK, MessageBoxOptions.DefaultDesktopOnly);
+                                    return;
+                                }
+                            }
 
                             ListBoxItem item = new ListBoxItem();
                             item.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("White"));
@@ -177,13 +177,13 @@ namespace AWClient
                                 var ee = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AW>>(li.Tag.ToString())[0];
                                 if (ee.record[0].elements[0].xpath == element[0].record[0].elements[0].xpath)
                                 {
-                                     element[0].record[0].elements[0].name=ee.record[0].elements[0].name;
-                                     item.Tag = Newtonsoft.Json.JsonConvert.SerializeObject(element);
-                                     break;
+                                    element[0].record[0].elements[0].name = ee.record[0].elements[0].name;
+                                    item.Tag = Newtonsoft.Json.JsonConvert.SerializeObject(element);
+                                    break;
                                 }
                             }
                             item.Style = (Style)Resources[element[0].record[0].elements[0].action.ToUpper()];
-                            item.FontSize = 16; 
+                            item.FontSize = 16;
 
                             item.GotFocus += new RoutedEventHandler(tvi_GotFocus);
                             listBox.Items.Add(item);
@@ -217,7 +217,7 @@ namespace AWClient
         {
             if (selectNode == null)
             {
-                 
+
                 selectNode = sender as ListBoxItem;
                 txtNode = new TextBox();
                 if (selectNode.Content != null)
@@ -227,7 +227,7 @@ namespace AWClient
                 }
             }
         }
-       
+
         private void buttonClick(object sender, RoutedEventArgs e)
         {
             Fold.ColumnDefinitions[1].Width = new GridLength(0);
@@ -247,7 +247,7 @@ namespace AWClient
                 selectNode = listBox.SelectedItem as ListBoxItem;
 
                 string json = selectNode.Tag.ToString();
-                
+
                 var element = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AW>>(json);
 
                 txtID.Text = element[0].record[0].elements[0].id;
@@ -257,7 +257,7 @@ namespace AWClient
                 else
                     txtName.Text = element[0].record[0].elements[0].name;
 
-                if(txtName.Text=="")
+                if (txtName.Text == "")
                 {
                     txtName.Background = new SolidColorBrush(Color.FromRgb(255, 0, 0));
                 }
@@ -265,13 +265,13 @@ namespace AWClient
                 {
                     txtName.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
                 }
-                cboType.Text= element[0].record[0].elements[0].action; 
-                txtValue.Text = element[0].record[0].elements[0].value; 
-                txtComments.Text = element[0].record[0].elements[0].comment; 
+                cboType.Text = element[0].record[0].elements[0].action;
+                txtValue.Text = element[0].record[0].elements[0].value;
+                txtComments.Text = element[0].record[0].elements[0].comment;
                 oldName = txtName.Text;
             }
             catch
-            {}
+            { }
         }
 
         private void OnSaveAWStep(object sender, RoutedEventArgs e)
@@ -282,16 +282,16 @@ namespace AWClient
             var element = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AW>>(json);
             foreach (ListBoxItem item in listBox.Items)
             {
-                
+
                 string tag = item.Tag.ToString();
                 var ee = Newtonsoft.Json.JsonConvert.DeserializeObject<List<AW>>(tag);
 
-                if (txtName.Text!=oldName && ee[0].record[0].elements[0].name == txtName.Text && ee[0].record[0].fullUrl == element[0].record[0].fullUrl)
+                if (txtName.Text != oldName && ee[0].record[0].elements[0].name == txtName.Text && ee[0].record[0].fullUrl == element[0].record[0].fullUrl)
                 {
                     MessageBox.Show("Element重名,请重新输入!");
                     return;
                 }
-            } 
+            }
 
             if (!utils.isRightName(txtName.Text))
             {
@@ -309,7 +309,7 @@ namespace AWClient
 
             selectNode.Tag = JSON;
 
-            if(txtID.Text!="")
+            if (txtID.Text != "")
             {
                 selectNode.Content = txtID.Text;
             }
@@ -326,7 +326,7 @@ namespace AWClient
                 txtName.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
             }
 
-            oldName=txtName.Text;
+            oldName = txtName.Text;
             utils.awjson = utils.CreateAW();
             utils.CreateMap();
         }
@@ -358,8 +358,8 @@ namespace AWClient
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             ScrollViewer sv = e.OriginalSource as ScrollViewer;
-            double offset =sv.VerticalOffset;
- 
+            double offset = sv.VerticalOffset;
+
             Decorator border = VisualTreeHelper.GetChild(lstIndex, 0) as Decorator;
             if (border != null)
             {
